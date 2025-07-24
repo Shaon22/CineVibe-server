@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+const cors = require("cors");
 import dotenv from 'dotenv';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 
@@ -15,6 +16,9 @@ const dbName = process.env.DB_NAME;
 if (!username || !password || !dbName) {
   throw new Error("Missing MongoDB environment variables in .env");
 }
+// middlewares
+app.use(cors());
+app.use(express.json());
 
 // Build URI dynamically
 const uri = `mongodb+srv://${username}:${password}@cluster0.sykxlbw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -32,6 +36,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
+     const movieCollection = client.db("CineVibe").collection("movies");
     // Ping the admin DB
     await client.db("admin").command({ ping: 1 });
     console.log("✅ Successfully connected to MongoDB!");
@@ -39,6 +44,11 @@ async function run() {
     const db = client.db(dbName);
 
     // Example route
+     app.get("/allMovies", async (req, res) => {
+      const cursor = movieCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
     app.get('/', async (req: Request, res: Response) => {
       const data = await db.collection('users').find().toArray();
       res.json(data);
