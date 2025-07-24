@@ -37,6 +37,8 @@ async function run() {
   try {
     await client.connect();
      const movieCollection = client.db("CineVibe").collection("movies");
+     const seriesCollection = client.db("CineVibe").collection("series");
+     const blogsCollection = client.db("CineVibe").collection("blogs");
     // Ping the admin DB
     await client.db("admin").command({ ping: 1 });
     console.log("✅ Successfully connected to MongoDB!");
@@ -46,6 +48,16 @@ async function run() {
     // Example route
      app.get("/allMovies", async (req, res) => {
       const cursor = movieCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+     app.get("/allSeries", async (req, res) => {
+      const cursor = seriesCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+     app.get("/allBlogs", async (req, res) => {
+      const cursor = blogsCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
