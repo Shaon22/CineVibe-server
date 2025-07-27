@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 const cors = require("cors");
 import dotenv from 'dotenv';
-import { MongoClient, ServerApiVersion } from 'mongodb';
+import { MongoClient, ObjectId, ServerApiVersion } from 'mongodb';
 
 dotenv.config();
 
@@ -51,16 +51,40 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+
+     app.get("/allMovies/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await movieCollection.findOne(query);
+      res.send(result);
+    });
+
      app.get("/allSeries", async (req, res) => {
       const cursor = seriesCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
+
+    app.get("/allSeries/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await seriesCollection.findOne(query);
+      res.send(result);
+    });
+
      app.get("/allBlogs", async (req, res) => {
       const cursor = blogsCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
+    
+     app.get("/allBlogs/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await blogsCollection.findOne(query);
+      res.send(result);
+    });
+
     app.get('/', async (req: Request, res: Response) => {
       const data = await db.collection('users').find().toArray();
       res.json(data);
