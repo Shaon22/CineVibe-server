@@ -75,16 +75,19 @@ async function run() {
             const result = await blogsCollection.findOne(query);
             res.send(result);
         });
-        app.get('/', async (req, res) => {
-            const data = await db.collection('users').find().toArray();
-            res.json(data);
+        // app.get("/", async (req: Request, res: Response) => {
+        //   const data = await db.collection("users").find().toArray();
+        //   res.json(data);
+        // });
+        app.get("/", (req, res) => {
+            res.send("CineVibe Server is running!");
         });
         app.listen(port, () => {
             console.log(`Server running at http://localhost:${port}`);
         });
     }
     catch (err) {
-        console.error('MongoDB connection error:', err);
+        console.error("MongoDB connection error:", err);
         process.exit(1);
     }
 }
