@@ -84,11 +84,6 @@ async function run() {
       const result = await blogsCollection.findOne(query);
       res.send(result);
     });
-
-    app.get("/", async (req: Request, res: Response) => {
-      const data = await db.collection("users").find().toArray();
-      res.json(data);
-    });
     app.get("/", (req, res) => {
       res.send("CineVibe Server is running!");
     });
