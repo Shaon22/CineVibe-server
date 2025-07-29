@@ -2,4 +2,4 @@ src/
 tsconfig.json
 *.ts
 *.tsx
-node_modules/
+
